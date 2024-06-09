@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"greenlight/internal/data"
 	"net/http"
+	"time"
 )
 
 // creatMovieHandler creates movies
@@ -17,8 +19,20 @@ func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request)
 	if err != nil {
 		http.NotFound(w, r)
 		return
-
 	}
 
-	fmt.Fprintf(w, "Show the details of movie %d\n", id)
+	movie := data.Movie{
+		ID:        id,
+		CreatedAt: time.Now(),
+		Title:     "Casablanca",
+		Runtime:   102,
+		Genres:    []string{"drama", "romance", "war"},
+		Version:   1,
+	}
+
+	err = app.writeJSON(w, http.StatusOK, movie, nil)
+	if err != nil {
+		app.logger.Println(err)
+	}
+
 }
