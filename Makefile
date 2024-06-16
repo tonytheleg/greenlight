@@ -1,3 +1,6 @@
+db/init:
+	podman run -d -P -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD="letsgo" --name postgres postgres
+
 db/start:
 	podman start postgres
 
