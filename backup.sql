@@ -187,9 +187,8 @@ ALTER TABLE ONLY public.movies ALTER COLUMN id SET DEFAULT nextval('public.movie
 
 COPY public.movies (id, created_at, title, year, runtime, genres, version) FROM stdin;
 1	2024-06-15 23:02:33+00	Moana	2016	107	{animation,adventure}	1
-2	2024-06-15 23:03:08+00	Black Panther	2018	134	{action,adventure}	1
-3	2024-06-15 23:03:15+00	Deadpool	2016	108	{action,comedy}	1
-4	2024-06-15 23:03:21+00	The Breakfast Club	1986	96	{drama}	1
+2	2024-06-15 23:03:08+00	Black Panther	2018	134	{sci-fi,action,adventure}	2
+4	2024-06-15 23:03:21+00	The Breakfast Club	1985	96	{comedy,drama}	3
 \.
 
 
