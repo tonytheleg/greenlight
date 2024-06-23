@@ -15,7 +15,7 @@ type Movies interface {
 	Get(id int64) (*Movie, error)
 	Update(movie *Movie) error
 	Delete(id int64) error
-	GetAll(title string, genres []string, filters Filters) ([]*Movie, error)
+	GetAll(title string, genres []string, filters Filters) ([]*Movie, Metadata, error)
 }
 
 type Models struct {
@@ -25,11 +25,5 @@ type Models struct {
 func NewModels(db *sql.DB) Models {
 	return Models{
 		Movies: MovieModel{DB: db},
-	}
-}
-
-func NewMockModels() Models {
-	return Models{
-		Movies: MockMovieModel{},
 	}
 }
