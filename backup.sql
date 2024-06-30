@@ -252,6 +252,8 @@ COPY public.schema_migrations (version, dirty) FROM stdin;
 
 COPY public.users (id, created_at, name, email, password_hash, activated, version) FROM stdin;
 1	2024-06-28 17:44:28+00	Alice Smith	alice@example.com	\\x2432612431322464513141594d5579493350726663564570437576574f2e2e792f357256316d46644154315a34413872516a4b5055304c756a36784f	f	1
+17	2024-06-30 22:22:40+00	Bob Jones	bob@example.com	\\x243261243132244d7154644c41586c4b597571684a6175524d43672e4f32386d714e4546496f463853395773376d4a4a6464317a6575413341654269	f	1
+18	2024-06-30 22:27:45+00	Dave Smith	dave@example.com	\\x2432612431322444316754437972374b396449765333696f784c56332e7732356d523452543034316c534e58734a746c50366f43457238774641754b	f	1
 \.
 
 
@@ -266,7 +268,7 @@ SELECT pg_catalog.setval('public.movies_id_seq', 4, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 1, true);
+SELECT pg_catalog.setval('public.users_id_seq', 18, true);
 
 
 --

@@ -6,6 +6,7 @@ import (
 	"flag"
 	"greenlight/internal/data"
 	"greenlight/internal/jsonlog"
+	"greenlight/internal/mailer"
 	"os"
 	"time"
 
@@ -25,6 +26,13 @@ type config struct {
 		maxIdleConns int
 		maxIdleTime  string
 	}
+	smtp struct {
+		host     string
+		port     int
+		username string
+		password string
+		sender   string
+	}
 }
 
 // application holds deps for handlers, helpers, and middleware
@@ -32,6 +40,7 @@ type application struct {
 	config config
 	logger *jsonlog.Logger
 	models data.Models
+	mailer mailer.Mailer
 }
 
 func main() {
@@ -47,6 +56,12 @@ func main() {
 	flag.IntVar(&cfg.db.maxIdleConns, "db-max-idle-conns", 25, "PostgreSQL max idle connections")
 	flag.StringVar(&cfg.db.maxIdleTime, "db-max-idle-time", "15m", "PostgreSQL max connection idle time")
 
+	flag.StringVar(&cfg.smtp.host, "smtp-host", "sandbox.smtp.mailtrap.io", "SMTP host")
+	flag.IntVar(&cfg.smtp.port, "smtp-port", 2525, "SMTP port")
+	flag.StringVar(&cfg.smtp.username, "smtp-username", "f616ccedd76715", "SMTP username")
+	flag.StringVar(&cfg.smtp.password, "smtp-password", "0e7ebc19360a12", "SMTP password")
+	flag.StringVar(&cfg.smtp.sender, "smtp-sender", "Greenlight <no-reply@greenlight.alexedwards.net>", "SMTP sender")
+
 	flag.Parse()
 
 	// create logger that writes message and current date/time
@@ -60,10 +75,11 @@ func main() {
 
 	defer db.Close()
 
-	app := application{
+	app := &application{
 		config: cfg,
 		logger: logger,
 		models: data.NewModels(db),
+		mailer: mailer.New(cfg.smtp.host, cfg.smtp.port, cfg.smtp.username, cfg.smtp.password, cfg.smtp.sender),
 	}
 
 	err = app.serve()
